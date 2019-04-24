@@ -103,7 +103,7 @@ class UserHomeScreen extends React.Component {
                     />
                 </View> 
               {
-                this.state.driverAcceptedRequest2 &&
+                this.state.accepted &&
                  <View style={styles.buttonStyle}>
                     <Button color='#9e0c29'
                         title="Call driver"
