@@ -34,7 +34,9 @@ class UserHomeScreen extends React.Component {
         driverContact: "7745847590",
         location : {},
         errorMessage : null,
-        driverAcceptedRequest2: false
+        accepted: false,
+        msg : "",
+        driverId : ""
         
     }
 
@@ -44,8 +46,17 @@ class UserHomeScreen extends React.Component {
   componentWillMount(){
 
     this._getLocationAsync();
-    let driverAcceptedRequest = this.props.navigation.getParam('driverAcceptedRequest',true);
-    this.setState({driverAcceptedRequest2 : driverAcceptedRequest})
+  }
+
+  componentDidMount(){
+
+    this.socket.on('accept', (msg)=>{
+      var msg = `Ms ${msg.driverId} has accepted your request`
+      console.log(msg)
+      this.setState({ accepted : true , 
+        driverId : msg.driverId, driverContactNo : msg.contactNo})
+    })
+
   }
  
 
@@ -93,16 +104,12 @@ class UserHomeScreen extends React.Component {
                 </View> 
               {
                 this.state.driverAcceptedRequest2 &&
-              <View> {
                  <View style={styles.buttonStyle}>
                     <Button color='#9e0c29'
                         title="Call driver"
                          onPress={ this._call }
                       />
                  </View>
-              }
-              </View>
-                
                }
         </View>
       );
