@@ -6,6 +6,7 @@ import SocketIOClient from 'socket.io-client';
 import IP from '../constant/IP';
 import { Constants, Location, Permissions } from 'expo';
 import call from 'react-native-phone-call'
+import AwesomeAlert from 'react-native-awesome-alerts';
 // User Home
 
 class UserHomeScreen extends React.Component {
@@ -32,17 +33,21 @@ class UserHomeScreen extends React.Component {
         contactNo : "",
         driverContact: "7745847590",
         location : {},
-        errorMessage : null
+        errorMessage : null,
+        driverAcceptedRequest2: false
+        
     }
 
-  }
+  };
+  
 
   componentWillMount(){
 
     this._getLocationAsync();
-
+    let driverAcceptedRequest = this.props.navigation.getParam('driverAcceptedRequest',true);
+    this.setState({driverAcceptedRequest2 : driverAcceptedRequest})
   }
-
+ 
 
 
   _getLocationAsync = async () => {
@@ -56,6 +61,7 @@ class UserHomeScreen extends React.Component {
     let location = await Location.getCurrentPositionAsync({});
     console.log("location recive" , location)
     this.setState({ location });
+    
   };
 
   _call = () =>{
@@ -85,17 +91,19 @@ class UserHomeScreen extends React.Component {
                          onPress={ this._sendRequest }
                     />
                 </View> 
-              
-                <View style={styles.buttonStyle}>
+              {
+                this.state.driverAcceptedRequest2 &&
+              <View> {
+                 <View style={styles.buttonStyle}>
                     <Button color='#9e0c29'
                         title="Call driver"
                          onPress={ this._call }
                       />
-                </View>
-            
-        
-        
-          
+                 </View>
+              }
+              </View>
+                
+               }
         </View>
       );
     }

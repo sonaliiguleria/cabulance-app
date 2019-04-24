@@ -19,7 +19,8 @@ class DriverHomeScreen extends React.Component {
         clientPhone : "",
         clientSocketId : "",
         requested : false,
-        location : {}
+        location : {},
+        
     }
 
     this.socket.on('request' , (msg)=>{
@@ -33,7 +34,8 @@ class DriverHomeScreen extends React.Component {
         location : {
           latitude : msg.location.latitude,
           longitude : msg.location.longitude
-        }
+        },
+        driverAcceptedRequest: false
       })
 
     })
@@ -56,6 +58,7 @@ class DriverHomeScreen extends React.Component {
   _ready = () =>{
 
     this.socket.emit('ready', { id : this.state.id , driverId : this.socket.id })
+    
 
   };
 
@@ -67,7 +70,7 @@ class DriverHomeScreen extends React.Component {
     this.socket.emit('sendAcception', { driverId , id , contactNo })
 
     this.props.navigation.navigate( 'DriverPostAccept' , { location : this.state.location } );
-
+    this.props.navigation.navigate('UserHome',{driverAcceptedRequest:! this.state.driverAcceptedRequest});
   };
   static navigationOptions={
     title: "Driver's Home Page",
@@ -94,15 +97,17 @@ class DriverHomeScreen extends React.Component {
 
 
           {
-            ! this.state.requested &&
+            ! this.state.requested && 
           <View>
+            { 
             <View style={styles.buttonStyle}>
-               <Button color="#9e0c29"
+               <Button color='#9e0c29'
                   title="I'm Ready"
                   onPress={this._ready}
                   on
-                />
-            </View>
+                 
+                /> 
+            </View> }
 
            
             
@@ -110,8 +115,6 @@ class DriverHomeScreen extends React.Component {
           </View>
 
           }
-
-
 
 
           <AwesomeAlert style={color="#9e0c29"}
