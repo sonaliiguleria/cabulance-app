@@ -13,7 +13,7 @@ class DriverHomeScreen extends React.Component {
     super(props);
     this.socket = SocketIOClient(IP);
     this.state = {
-        id : "Rutuja",
+        driverId : "Rutuja",
         contactNo : "985575414",
         clientName : "",
         clientPhone : "",
@@ -35,7 +35,7 @@ class DriverHomeScreen extends React.Component {
           latitude : msg.location.latitude,
           longitude : msg.location.longitude
         },
-        driverAcceptedRequest: false
+        
       })
 
     })
@@ -70,7 +70,7 @@ class DriverHomeScreen extends React.Component {
     this.socket.emit('sendAcception', { driverId , id , contactNo })
 
     this.props.navigation.navigate( 'DriverPostAccept' , { location : this.state.location } );
-    this.props.navigation.navigate('UserHome',{driverAcceptedRequest:! this.state.driverAcceptedRequest});
+    
   };
   static navigationOptions={
     title: "Driver's Home Page",

@@ -54,12 +54,16 @@ class UserHomeScreen extends React.Component {
       var msg = `Ms ${msg.driverId} has accepted your request`
       console.log(msg)
       this.setState({ accepted : true , 
-        driverId : msg.driverId, driverContactNo : msg.contactNo})
+        driverId : msg.driverId})
     })
 
   }
  
-
+  hideAlert = () => {
+    this.setState({
+      accepted: false
+    });
+  };
 
   _getLocationAsync = async () => {
     let { status } = await Permissions.askAsync(Permissions.LOCATION);
@@ -111,6 +115,28 @@ class UserHomeScreen extends React.Component {
                       />
                  </View>
                }
+               
+                 
+                   <AwesomeAlert style={color="#9e0c29"}
+                    show={this.state.accepted}
+                    showProgress={false}
+                    title="Cabulance Driver"
+                    message={ `${this.state.driverId} is on it's way...` }
+                    closeOnTouchOutside={true}
+                    closeOnHardwareBackPress={false}
+                    showCancelButton={true}
+                    showConfirmButton={true}
+                   
+                    confirmText="OKAY!"
+                    confirmButtonColor="#9e0c29"
+                    
+                    onConfirmPressed={() => {
+                      this.hideAlert();
+                    }}
+
+                    />
+                 
+               
         </View>
       );
     }
